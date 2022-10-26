@@ -4,7 +4,7 @@ require("dotenv").config();
 const express =require("express");
 const app=express();
 app.use(express.json());
-const port=3001;
+// const port=3001;
 
 const NOTION_KEY=process.env.NOTION_KEY;
 const NOTION_DB_ID=process.env.NOTION_DB_ID;
@@ -97,7 +97,7 @@ async function addComment({ content, replyTo = "" }) {
     });
 }
 
-app.get("/comments", async (req, res) => {
+app.get("/api/comments", async (req, res) => {
     try {
         const comments = await getAllComments();
         res.json(comments);
@@ -106,7 +106,7 @@ app.get("/comments", async (req, res) => {
         res.sendStatus(500);
     }
 });
-app.post("/comments", async (req, res) => {
+app.post("/api/comments", async (req, res) => {
     try {
         await addComment(req.body);
         res.sendStatus(201);
@@ -115,9 +115,9 @@ app.post("/comments", async (req, res) => {
         res.sendStatus(500);
     }
 });
-app.listen(port,()=>{
-    console.log(`example app listening at http://localhost:${port}`);
-});
+// app.listen(port,()=>{
+//     console.log(`example app listening at http://localhost:${port}`);
+// });
 function getRelativeTimeDesc(time) {
     const currentInMs = new Date().getTime();
     const timeInMs = new Date(time).getTime();
@@ -143,3 +143,4 @@ function getRelativeTimeDesc(time) {
         return `${Math.ceil(relativeTime / yearInMs)} 年前`;
     }
 }
+module.exports=app;
